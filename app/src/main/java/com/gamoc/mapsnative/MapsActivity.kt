@@ -61,6 +61,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mMap.setOnMarkerClickListener(this)
         setUpMap()
 
+        val currentPlaces = arrayOf<LatLng>(
+            LatLng(-0.30305936057780813, -78.47000660950086),
+            LatLng(-0.26834246643423926, -78.47462279960796),
+            LatLng(-0.27718371560750266, -78.52384404581557),
+            LatLng(-0.20196692479362632, -78.43318721968977)
+        )
+
+        for (item in currentPlaces) {
+            mMap.addMarker(MarkerOptions().position(item).title("$item"))
+        }
+        // -0.30305936057780813, -78.47000660950086
+        // -0.26834246643423926, -78.47462279960796
+        // -0.27718371560750266, -78.52384404581557
+        // -0.20196692479362632, -78.43318721968977
+
         // Add a marker in Sydney and move the camera
         /*val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
@@ -111,6 +126,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onMarkerClick(p0: Marker): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 }

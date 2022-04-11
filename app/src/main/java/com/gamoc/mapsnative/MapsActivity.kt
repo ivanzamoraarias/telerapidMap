@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,12 +20,13 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.Marker
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var lastLocation: Location
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var addNewMarkerModal: AddNewMarkerModal
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 1
@@ -41,8 +43,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        addNewMarkerModal = AddNewMarkerModal()
+
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+
     }
 
     /**
@@ -59,6 +65,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setOnMarkerClickListener(this)
+        mMap.setOnMapClickListener(this)
         setUpMap()
 
         val currentPlaces = arrayOf<LatLng>(
@@ -126,6 +133,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     override fun onMarkerClick(p0: Marker): Boolean {
+        Toast.makeText(this, "Works", Toast.LENGTH_SHORT).show()
         return true
+    }
+
+    override fun onMapClick(p0: LatLng) {
+        Toast.makeText(this, "Works on Maps", Toast.LENGTH_SHORT).show()
+        addNewMarkerModal.show(
+            supportFragmentManager, addNewMarkerModal.tag)
+        placeMarkerOnMap(p0)
     }
 }

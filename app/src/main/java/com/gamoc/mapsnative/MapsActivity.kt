@@ -2,10 +2,14 @@ package com.gamoc.mapsnative
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
@@ -45,21 +49,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         addNewMarkerModal = AddNewMarkerModal()
 
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-
-
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.showItemsOption -> {
+                val intent = Intent(this, MarkerDetailsScrollingActivity::class.java).apply{}
+                startActivity(intent)
+               true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
